@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MH HACKS | ULTIMATE DASHBOARD V11.0 PREMIUM + EARN</title>
+    <title>MH HACKS | ULTIMATE DASHBOARD V12.0 PREMIUM + EARN</title>
 
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Rajdhani:wght@500;700;800;900&display=swap" rel="stylesheet">
@@ -91,6 +91,7 @@
         @keyframes gridPulse { 0% { opacity: 0.2; } 50% { opacity: 0.5; } 100% { opacity: 0.2; } }
         @keyframes earnPulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); } }
         @keyframes glowText { 0% { text-shadow: 0 0 5px var(--primary); } 50% { text-shadow: 0 0 20px var(--primary); } 100% { text-shadow: 0 0 5px var(--primary); } }
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
         /* SPLASH SCREEN */
         #splash { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
@@ -112,15 +113,15 @@
 
         /* PREMIUM FORGOT PASSWORD MODAL - RED & BLACK DESIGN */
         .forgot-pass-overlay { 
-            position: absolute; 
+            position: fixed; 
             inset: 0; 
             background: rgba(0,0,0,0.98); 
             display: none; 
             flex-direction: column; 
             justify-content: center; 
             align-items: center; 
-            padding: 30px; 
-            z-index: 100; 
+            padding: 20px; 
+            z-index: 10000; 
             backdrop-filter: blur(8px); 
             animation: fadeIn 0.4s ease; 
         }
@@ -129,14 +130,14 @@
             background: linear-gradient(145deg, #1a0000, #0a0000);
             border: 2px solid var(--primary);
             border-radius: 20px;
-            padding: 40px;
+            padding: 30px;
             width: 90%;
             max-width: 450px;
             text-align: center;
             box-shadow: 0 0 50px rgba(255, 0, 0, 0.3);
-            animation: glowText 2s infinite;
             position: relative;
             overflow: hidden;
+            animation: glowText 2s infinite;
         }
         
         .forgot-pass-card::before {
@@ -164,7 +165,7 @@
         .forgot-pass-subtitle {
             color: #aaa;
             font-size: 14px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             letter-spacing: 1px;
             position: relative;
             z-index: 1;
@@ -271,11 +272,11 @@
 
         .badge-free { position: absolute; top: 10px; right: 10px; background: var(--primary); color: white; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 1px;}
         .badge-vip { position: absolute; top: 10px; right: 10px; background: var(--vip-gold); color: black; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; box-shadow: 0 0 10px rgba(255,215,0,0.5); letter-spacing: 1px;}
-        .badge-price { position: absolute; top: 10px; left: 10px; background: var(--wallet-blue); color: black; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0,229,255,0.5);}
+        .badge-price { position: absolute; top: 10px; left: 10px; background: var(--primary); color: white; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 0 10px rgba(255,0,0,0.5);}
         .status-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 15px; left: 15px; }
         .tool-title { color: white; font-family: 'Rajdhani'; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; word-break: break-word; line-height: 1.2;}
         .tool-sub { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 4px; }
-        .tool-price { font-size: 12px; color: var(--wallet-blue); font-weight: 800; margin-top: 5px; letter-spacing: 1px; }
+        .tool-price { font-size: 12px; color: var(--primary); font-weight: 800; margin-top: 5px; letter-spacing: 1px; }
 
         .news-card { background: #0a0a0a; border: 1px solid var(--primary); border-radius: 16px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); animation: slideUpGlow 0.5s ease; transition: 0.3s; position: relative;}
         .news-card:hover { transform: translateY(-5px); box-shadow: var(--box-glow); border-color: #ff4444; }
@@ -521,6 +522,7 @@
             gap: 8px; 
             font-size: 14px; 
             width: 100%; 
+            min-width: 100px;
         }
         
         .share-btn.whatsapp { 
@@ -581,7 +583,7 @@
 
         /* SEND MONEY SECTION - RED/BLACK THEME */
         .send-money-box {
-            background: #1a0000;
+            background: linear-gradient(145deg, #1a0000, #0a0000);
             border: 2px solid var(--primary);
             border-radius: 20px;
             padding: 30px;
@@ -600,13 +602,13 @@
             letter-spacing: 1px;
         }
         
-        .admin-id-container {
+        .id-container {
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
         }
         
-        .admin-id-input {
+        .id-input {
             flex: 1;
             padding: 15px;
             background: #000;
@@ -618,7 +620,7 @@
             font-size: 16px;
         }
         
-        .admin-id-input:read-only {
+        .id-input:read-only {
             background: #1a0000;
             color: var(--primary);
             border-color: #8b0000;
@@ -633,6 +635,7 @@
             cursor: pointer;
             font-weight: 800;
             transition: 0.3s;
+            white-space: nowrap;
         }
         
         .copy-btn-large:hover {
@@ -671,13 +674,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: slideIn 0.5s ease;
         }
         
         .user-id-text {
             color: var(--primary);
             font-family: monospace;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
+            letter-spacing: 1px;
         }
 
         /* POPUP ADS */
@@ -724,7 +729,7 @@
         .pay-desc { color: #aaa; font-size: 13px; margin-bottom: 20px; line-height: 1.5; margin-top: 10px;}
         .qr-image-box { width: 100%; margin: 0 auto; text-align: center; background: #000; padding: 10px; border-radius: 10px; border: 1px dashed #333;}
         .qr-image-box img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px; }
-        .tool-price-tag { background: var(--primary); color: black; padding: 10px 20px; border-radius: 50px; display: inline-block; font-weight: 900; font-size: 24px; margin: 15px 0; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+        .tool-price-tag { background: var(--primary); color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; font-weight: 900; font-size: 24px; margin: 15px 0; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
 
         .profile-table { width: 100%; color: #ccc; border-collapse: collapse; margin-bottom: 25px; background: #080808; border-radius: 10px; overflow: hidden; border: 1px solid #222;}
         .profile-table td { padding: 16px 15px; border-bottom: 1px solid #1a1a1a; font-size: 14px;}
@@ -774,8 +779,8 @@
             .wallet-stats { grid-template-columns: 1fr; }
             .wallet-actions { grid-template-columns: 1fr; }
             .referral-share-btns { grid-template-columns: 1fr; }
-            .referral-share-btns .share-btn { width: 100%; }
-            .admin-id-container { flex-direction: column; }
+            .referral-share-btns .share-btn { width: 100%; min-width: auto; }
+            .id-container { flex-direction: column; }
             .copy-btn-large { width: 100%; }
         }
     </style>
@@ -840,17 +845,17 @@
                 <span style="color:#ff9900; cursor:pointer; font-weight:bold;" onclick="showForgotPass()">FORGOT PASSWORD?</span>
             </div>
         </div>
+    </div>
 
-        <!-- PREMIUM FORGOT PASSWORD MODAL - RED/BLACK DESIGN -->
-        <div class="forgot-pass-overlay" id="forgotPassOverlay">
-            <div class="forgot-pass-card" id="forgotPassCard">
-                <i class="fa fa-lock success-icon" style="font-size: 50px; color: var(--primary);"></i>
-                <h3 class="forgot-pass-title">RECOVER PASSWORD</h3>
-                <p class="forgot-pass-subtitle">Enter your registered email to retrieve your key</p>
-                <input type="email" id="recovEmail" class="input-box" placeholder="Registered Email Address" style="margin-bottom: 20px; background: #000; border-color: var(--primary);">
-                <button class="btn" onclick="recoverPassword()" style="margin-top:0; background: linear-gradient(90deg, #8b0000, var(--primary));">RETRIEVE KEY</button>
-                <button class="btn" onclick="document.getElementById('forgotPassOverlay').style.display='none'" style="margin-top:10px; background:#222; border:1px solid #8b0000;">CANCEL</button>
-            </div>
+    <!-- PREMIUM FORGOT PASSWORD MODAL - RED/BLACK DESIGN -->
+    <div class="forgot-pass-overlay" id="forgotPassOverlay">
+        <div class="forgot-pass-card" id="forgotPassCard">
+            <i class="fa fa-lock" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h3 class="forgot-pass-title">RECOVER PASSWORD</h3>
+            <p class="forgot-pass-subtitle">Enter your registered email to retrieve your key</p>
+            <input type="email" id="recovEmail" class="input-box" placeholder="Registered Email Address" style="margin-bottom: 20px; background: #000; border-color: var(--primary);">
+            <button class="btn" onclick="recoverPassword()" style="margin-top:0; background: linear-gradient(90deg, #8b0000, var(--primary));">RETRIEVE KEY</button>
+            <button class="btn" onclick="document.getElementById('forgotPassOverlay').style.display='none'" style="margin-top:10px; background:#222; border:1px solid #8b0000;">CANCEL</button>
         </div>
     </div>
 
@@ -933,7 +938,7 @@
                     <div class="header-titles">
                         <div class="welcome-text" id="headerTitle">Welcome. <span id="headerSpan">MH HACKS</span></div>
                         <div class="sub-brand-text" id="headerSubText">PREMIUM SECURE TOOLKIT</div>
-                        <div class="status-text" id="headerStatus"><i class="fa fa-circle live-dot"></i> <span>SYSTEM V11.0 ACTIVE</span></div>
+                        <div class="status-text" id="headerStatus"><i class="fa fa-circle live-dot"></i> <span>SYSTEM V12.0 ACTIVE</span></div>
                     </div>
                 </div>
 
@@ -1180,8 +1185,8 @@
                         <h2 style="color:var(--primary); font-family:'Rajdhani'; font-size:32px; font-weight:900; margin-bottom:20px;"><i class="fa fa-paper-plane"></i> SEND MONEY</h2>
                         
                         <div class="form-label">RECIPIENT ID (Admin or User)</div>
-                        <div class="admin-id-container">
-                            <input type="text" id="recipientIdInput" class="admin-id-input" placeholder="Enter Recipient ID" value="ADMIN_MH">
+                        <div class="id-container">
+                            <input type="text" id="recipientIdInput" class="id-input" placeholder="Enter Recipient ID" value="ADMIN_MH" readonly>
                             <button class="copy-btn-large" onclick="copyRecipientId()"><i class="fa fa-copy"></i> COPY</button>
                         </div>
 
@@ -2120,7 +2125,11 @@
                         timestamp: Date.now()
                     });
 
+                    // Show success message
                     showToast(`✅ PKR ${amount} sent to ${recipientName} successfully!`);
+                    
+                    // Show success notification in modal
+                    showSuccessModal('SEND MONEY SUCCESS', `PKR ${amount} sent to ${recipientName}`);
                 } else {
                     // Admin transaction
                     await db.collection('admin_transactions').add({
@@ -2134,6 +2143,9 @@
                     });
 
                     showToast(`✅ PKR ${amount} sent to Admin successfully!`);
+                    
+                    // Show success notification in modal
+                    showSuccessModal('SEND MONEY SUCCESS', `PKR ${amount} sent to Admin`);
                 }
                 
                 document.getElementById('sendAmount').value = '';
@@ -2143,6 +2155,23 @@
             } catch(err) {
                 showToast("ERROR: " + err.message);
             }
+        }
+
+        // Success Modal for transactions
+        function showSuccessModal(title, message) {
+            const modal = document.getElementById('notifModal');
+            modal.style.display = 'flex';
+            
+            document.getElementById('modalContentInner').innerHTML = `
+                <i class="fa fa-times" onclick="closeModal()" style="position:absolute; right:25px; top:25px; color:#666; cursor:pointer; font-size:24px;"></i>
+                <i class="fa fa-check-circle success-animation" style="font-size:80px; color:var(--success-green); margin-bottom:25px;"></i>
+                <h2 style="font-family:'Rajdhani'; color:white; font-size: 36px; font-weight:900;">${title}</h2>
+                <p style="color:#ddd; font-size:15px; margin-top:15px; line-height:1.8;">
+                    ${message}<br>
+                    <span style="color:var(--primary); font-weight:800; font-size:18px;">THANK YOU!</span>
+                </p>
+                <button class="btn-modal btn-next" style="margin-top:35px; width:100%; padding: 18px;" onclick="closeModal()">CLOSE</button>
+            `;
         }
 
         async function updatePassword() {
@@ -2266,7 +2295,7 @@
             } else {
                 btn.innerHTML = '<i class="fa fa-crown" style="margin-right:8px"></i> <span class="desktop-text">VIP HACK</span><span class="mobile-text">VIP</span>';
                 btn.classList.remove('active-vip');
-                status.innerHTML = '<i class="fa fa-circle live-dot"></i> <span>PREMIUM TOOLKIT V11.0 ACTIVATED</span>';
+                status.innerHTML = '<i class="fa fa-circle live-dot"></i> <span>PREMIUM TOOLKIT V12.0 ACTIVATED</span>';
             }
             renderTools();
         }
