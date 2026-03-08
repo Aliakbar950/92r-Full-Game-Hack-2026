@@ -91,7 +91,7 @@
         @keyframes gridPulse { 0% { opacity: 0.2; } 50% { opacity: 0.5; } 100% { opacity: 0.2; } }
         @keyframes earnPulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); } }
         @keyframes glowText { 0% { text-shadow: 0 0 5px var(--primary); } 50% { text-shadow: 0 0 20px var(--primary); } 100% { text-shadow: 0 0 5px var(--primary); } }
-        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes popupScale { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
         /* SPLASH SCREEN */
         #splash { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
@@ -108,36 +108,37 @@
         .auth-card { background: var(--glass-bg); border: 1px solid var(--primary); box-shadow: var(--box-glow); width: 90%; max-width: 420px; padding: 40px; border-radius: 20px; text-align: center; backdrop-filter: blur(15px); animation: fadeIn 0.8s ease; position: relative; overflow: hidden; z-index: 10; }
         .input-box { width: 100%; padding: 15px; background: #050505; border: 1px solid #333; border-radius: 10px; color: white; outline: none; margin-top: 15px; transition: 0.3s; font-size: 14px; }
         .input-box:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255,0,0,0.3); }
+        .input-box:read-only { background: #1a0000; color: var(--primary); border-color: #8b0000; cursor: not-allowed; }
         .btn { width: 100%; padding: 15px; background: linear-gradient(90deg, var(--dark-red), var(--primary)); border: none; border-radius: 10px; color: white; font-weight: 700; cursor: pointer; margin-top: 25px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; font-family: 'Rajdhani'; font-size: 18px; }
         .btn:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--primary); }
 
         /* PREMIUM FORGOT PASSWORD MODAL - RED & BLACK DESIGN */
         .forgot-pass-overlay { 
-            position: fixed; 
+            position: absolute; 
             inset: 0; 
             background: rgba(0,0,0,0.98); 
             display: none; 
             flex-direction: column; 
             justify-content: center; 
             align-items: center; 
-            padding: 20px; 
-            z-index: 10000; 
+            padding: 30px; 
+            z-index: 100; 
             backdrop-filter: blur(8px); 
             animation: fadeIn 0.4s ease; 
         }
         
         .forgot-pass-card {
-            background: linear-gradient(145deg, #1a0000, #0a0000);
+            background: linear-gradient(145deg, #1a0000, #000000);
             border: 2px solid var(--primary);
             border-radius: 20px;
-            padding: 30px;
+            padding: 40px;
             width: 90%;
             max-width: 450px;
             text-align: center;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
-            animation: glowText 2s infinite;
+            animation: popupScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         .forgot-pass-card::before {
@@ -148,7 +149,9 @@
             width: 200%;
             height: 200%;
             background: linear-gradient(45deg, transparent, rgba(255,0,0,0.1), transparent);
-            animation: spin 10s linear infinite;
+            animation: spin 6s linear infinite;
+            z-index: 0;
+            pointer-events: none;
         }
         
         .forgot-pass-title {
@@ -165,48 +168,70 @@
         .forgot-pass-subtitle {
             color: #aaa;
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             letter-spacing: 1px;
             position: relative;
             z-index: 1;
         }
         
         .key-display-box {
-            background: #000;
-            border: 2px solid var(--primary);
+            background: #050505;
+            border: 2px dashed var(--primary);
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             margin: 20px 0;
             position: relative;
             z-index: 1;
             box-shadow: inset 0 0 30px rgba(255,0,0,0.2);
+            animation: glowText 2s infinite;
         }
         
         .key-label {
-            color: #888;
-            font-size: 12px;
+            color: #ff6666;
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             margin-bottom: 10px;
+            font-weight: bold;
         }
         
         .key-value {
-            color: var(--vip-gold);
+            color: var(--success-green);
             font-family: 'Rajdhani', monospace;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
             letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(255,215,0,0.5);
+            text-shadow: 0 0 20px rgba(0,255,0,0.5);
             word-break: break-all;
         }
         
         .success-icon {
             color: var(--success-green);
-            font-size: 60px;
+            font-size: 70px;
             margin-bottom: 20px;
             text-shadow: 0 0 30px var(--success-green);
             animation: pulse-green 2s infinite;
+            position: relative;
+            z-index: 1;
         }
+
+        /* PREMIUM TRANSACTION SUCCESS MODAL */
+        .transaction-modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000000;
+            display: none; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(15px);
+        }
+        .transaction-modal-card {
+            background: linear-gradient(145deg, #1a0000, #000000); border: 2px solid var(--success-green);
+            border-radius: 20px; padding: 40px; width: 90%; max-width: 450px; text-align: center;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.3); animation: popupScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden;
+        }
+        .tm-icon { font-size: 80px; color: var(--success-green); margin-bottom: 20px; text-shadow: 0 0 30px var(--success-green); animation: pulse-green 2s infinite; }
+        .tm-title { color: white; font-family: 'Rajdhani'; font-size: 32px; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .tm-amount { color: var(--success-green); font-family: 'Rajdhani'; font-size: 48px; font-weight: 900; margin: 15px 0; text-shadow: 0 0 20px rgba(0,255,0,0.5); }
+        .tm-desc { color: #aaa; font-size: 15px; margin-bottom: 30px; line-height: 1.5; }
+        .tm-btn { background: linear-gradient(90deg, #004d00, var(--success-green)); color: black; border: none; padding: 18px; border-radius: 12px; font-weight: 900; font-size: 18px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; font-family: 'Rajdhani'; }
+        .tm-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0,255,0,0.5); }
 
         /* DASHBOARD */
         #dashboard { display: none; height: 100vh; flex-direction: row; animation: fadeIn 0.5s ease; }
@@ -272,11 +297,11 @@
 
         .badge-free { position: absolute; top: 10px; right: 10px; background: var(--primary); color: white; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 1px;}
         .badge-vip { position: absolute; top: 10px; right: 10px; background: var(--vip-gold); color: black; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; box-shadow: 0 0 10px rgba(255,215,0,0.5); letter-spacing: 1px;}
-        .badge-price { position: absolute; top: 10px; left: 10px; background: var(--primary); color: white; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 0 10px rgba(255,0,0,0.5);}
+        .badge-price { position: absolute; top: 10px; left: 10px; background: var(--wallet-blue); color: black; font-size: 9px; padding: 3px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0,229,255,0.5);}
         .status-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 15px; left: 15px; }
         .tool-title { color: white; font-family: 'Rajdhani'; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; word-break: break-word; line-height: 1.2;}
         .tool-sub { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 4px; }
-        .tool-price { font-size: 12px; color: var(--primary); font-weight: 800; margin-top: 5px; letter-spacing: 1px; }
+        .tool-price { font-size: 12px; color: var(--wallet-blue); font-weight: 800; margin-top: 5px; letter-spacing: 1px; }
 
         .news-card { background: #0a0a0a; border: 1px solid var(--primary); border-radius: 16px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); animation: slideUpGlow 0.5s ease; transition: 0.3s; position: relative;}
         .news-card:hover { transform: translateY(-5px); box-shadow: var(--box-glow); border-color: #ff4444; }
@@ -387,48 +412,6 @@
             margin-top: 5px; 
         }
         
-        .wallet-actions { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; 
-            margin-bottom: 30px; 
-        }
-        
-        .wallet-action-btn { 
-            background: #1a0000; 
-            border: 2px solid var(--primary); 
-            border-radius: 15px; 
-            padding: 20px; 
-            text-align: center; 
-            cursor: pointer; 
-            transition: 0.3s; 
-        }
-        
-        .wallet-action-btn:hover { 
-            background: var(--primary); 
-            color: black; 
-            transform: scale(1.02); 
-            box-shadow: 0 0 30px rgba(255,0,0,0.3); 
-        }
-        
-        .wallet-action-btn i { 
-            font-size: 32px; 
-            margin-bottom: 10px; 
-            display: block; 
-            color: var(--primary); 
-        }
-        
-        .wallet-action-btn:hover i { 
-            color: black; 
-        }
-        
-        .wallet-action-btn span { 
-            font-weight: 800; 
-            font-size: 14px; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-        }
-
         .checkin-card { 
             background: linear-gradient(145deg, #1a0000, #0a0000); 
             border: 2px solid var(--primary); 
@@ -493,6 +476,7 @@
             align-items: center; 
             justify-content: space-between; 
             margin: 15px 0; 
+            gap: 10px;
         }
         
         .referral-link-text { 
@@ -500,13 +484,16 @@
             font-family: monospace; 
             font-size: 14px; 
             word-break: break-all; 
+            flex: 1;
         }
         
+        /* Fixed Social Buttons Grid */
         .referral-share-btns { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            gap: 10px; 
-            margin: 15px 0; 
+            gap: 15px; 
+            margin: 20px 0; 
+            width: 100%;
         }
         
         .share-btn { 
@@ -522,27 +509,17 @@
             gap: 8px; 
             font-size: 14px; 
             width: 100%; 
-            min-width: 100px;
+            color: white;
+            text-transform: uppercase;
         }
         
-        .share-btn.whatsapp { 
-            background: #25D366; 
-            color: white; 
-        }
-        
-        .share-btn.telegram { 
-            background: #0088cc; 
-            color: white; 
-        }
-        
-        .share-btn.facebook { 
-            background: #1877F2; 
-            color: white; 
-        }
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.telegram { background: #0088cc; }
+        .share-btn.facebook { background: #1877F2; }
         
         .share-btn:hover { 
-            transform: scale(1.02); 
-            box-shadow: 0 0 15px currentColor; 
+            transform: scale(1.05); 
+            box-shadow: 0 0 20px currentColor; 
         }
 
         .history-table { 
@@ -602,13 +579,13 @@
             letter-spacing: 1px;
         }
         
-        .id-container {
+        .admin-id-container {
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
         }
         
-        .id-input {
+        .admin-id-input {
             flex: 1;
             padding: 15px;
             background: #000;
@@ -620,10 +597,13 @@
             font-size: 16px;
         }
         
-        .id-input:read-only {
+        .admin-id-input:read-only {
             background: #1a0000;
             color: var(--primary);
             border-color: #8b0000;
+            cursor: not-allowed;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
         
         .copy-btn-large {
@@ -635,7 +615,6 @@
             cursor: pointer;
             font-weight: 800;
             transition: 0.3s;
-            white-space: nowrap;
         }
         
         .copy-btn-large:hover {
@@ -674,15 +653,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: slideIn 0.5s ease;
         }
         
         .user-id-text {
             color: var(--primary);
             font-family: monospace;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         /* POPUP ADS */
@@ -729,7 +707,7 @@
         .pay-desc { color: #aaa; font-size: 13px; margin-bottom: 20px; line-height: 1.5; margin-top: 10px;}
         .qr-image-box { width: 100%; margin: 0 auto; text-align: center; background: #000; padding: 10px; border-radius: 10px; border: 1px dashed #333;}
         .qr-image-box img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px; }
-        .tool-price-tag { background: var(--primary); color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; font-weight: 900; font-size: 24px; margin: 15px 0; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+        .tool-price-tag { background: var(--primary); color: black; padding: 10px 20px; border-radius: 50px; display: inline-block; font-weight: 900; font-size: 24px; margin: 15px 0; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
 
         .profile-table { width: 100%; color: #ccc; border-collapse: collapse; margin-bottom: 25px; background: #080808; border-radius: 10px; overflow: hidden; border: 1px solid #222;}
         .profile-table td { padding: 16px 15px; border-bottom: 1px solid #1a1a1a; font-size: 14px;}
@@ -778,10 +756,13 @@
             .notif-panel { width: 100%; right: -100%; border-radius: 0; top: 75px; height: calc(100vh - 75px); max-height: unset; }
             .wallet-stats { grid-template-columns: 1fr; }
             .wallet-actions { grid-template-columns: 1fr; }
-            .referral-share-btns { grid-template-columns: 1fr; }
-            .referral-share-btns .share-btn { width: 100%; min-width: auto; }
-            .id-container { flex-direction: column; }
+            .referral-share-btns { grid-template-columns: 1fr; } /* Ensures full width stacked nicely on mobile */
+            .referral-share-btns .share-btn { width: 100%; }
+            .admin-id-container { flex-direction: column; }
             .copy-btn-large { width: 100%; }
+            .forgot-pass-card { padding: 30px 20px; }
+            .key-value { font-size: 24px; }
+            .tm-amount { font-size: 36px; }
         }
     </style>
 </head>
@@ -845,17 +826,17 @@
                 <span style="color:#ff9900; cursor:pointer; font-weight:bold;" onclick="showForgotPass()">FORGOT PASSWORD?</span>
             </div>
         </div>
-    </div>
 
-    <!-- PREMIUM FORGOT PASSWORD MODAL - RED/BLACK DESIGN -->
-    <div class="forgot-pass-overlay" id="forgotPassOverlay">
-        <div class="forgot-pass-card" id="forgotPassCard">
-            <i class="fa fa-lock" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
-            <h3 class="forgot-pass-title">RECOVER PASSWORD</h3>
-            <p class="forgot-pass-subtitle">Enter your registered email to retrieve your key</p>
-            <input type="email" id="recovEmail" class="input-box" placeholder="Registered Email Address" style="margin-bottom: 20px; background: #000; border-color: var(--primary);">
-            <button class="btn" onclick="recoverPassword()" style="margin-top:0; background: linear-gradient(90deg, #8b0000, var(--primary));">RETRIEVE KEY</button>
-            <button class="btn" onclick="document.getElementById('forgotPassOverlay').style.display='none'" style="margin-top:10px; background:#222; border:1px solid #8b0000;">CANCEL</button>
+        <!-- PREMIUM FORGOT PASSWORD MODAL - RED/BLACK DESIGN -->
+        <div class="forgot-pass-overlay" id="forgotPassOverlay">
+            <div class="forgot-pass-card" id="forgotPassCard">
+                <i class="fa fa-lock success-icon" style="font-size: 60px; color: var(--primary); text-shadow: 0 0 30px var(--primary); animation: pulse-red 2s infinite;"></i>
+                <h3 class="forgot-pass-title">RECOVER PASSWORD</h3>
+                <p class="forgot-pass-subtitle">Enter your registered email to retrieve your key</p>
+                <input type="email" id="recovEmail" class="input-box" placeholder="Registered Email Address" style="margin-bottom: 20px; background: #050505; border-color: var(--primary);">
+                <button class="btn" onclick="recoverPassword()" style="margin-top:0; background: linear-gradient(90deg, #8b0000, var(--primary));">RETRIEVE KEY</button>
+                <button class="btn" onclick="document.getElementById('forgotPassOverlay').style.display='none'" style="margin-top:10px; background:#111; border:1px solid #8b0000; color:#aaa;">CANCEL</button>
+            </div>
         </div>
     </div>
 
@@ -870,6 +851,17 @@
             <input type="text" id="regRef" class="input-box" placeholder="Referral Code (If Any)">
             <button class="btn" onclick="signup()">SIGN UP</button>
             <p style="margin-top:25px; font-size:13px; color:#666">Return to <span style="color:var(--primary); cursor:pointer; font-weight:bold;" onclick="switchPage('login')">LOGIN</span></p>
+        </div>
+    </div>
+
+    <!-- PREMIUM TRANSACTION SUCCESS MODAL -->
+    <div id="transactionSuccessModal" class="transaction-modal-overlay">
+        <div class="transaction-modal-card">
+            <i class="fa fa-check-circle tm-icon"></i>
+            <h2 class="tm-title">TRANSACTION SUCCESS</h2>
+            <div class="tm-amount" id="tsAmountDisplay">PKR 0</div>
+            <div class="tm-desc" id="tsDescDisplay">Funds processed securely.</div>
+            <button class="tm-btn" onclick="closeTransactionModal()">CONTINUE</button>
         </div>
     </div>
 
@@ -894,19 +886,22 @@
             <div class="btn-unified" onclick="showSection('reports', this)">
                 <i class="fa fa-bug"></i> REPORT / REQUEST
             </div>
+            
             <!-- FREE EARN BUTTON - RED/BLACK THEME -->
             <div class="btn-unified" onclick="showSection('earn', this)" style="border-color: var(--primary); animation: earnPulse 3s infinite;">
                 <i class="fa fa-coins"></i> FREE EARN
             </div>
+            
+            <!-- SEND MONEY BUTTON - Now directly under FREE EARN -->
+            <div class="btn-unified" onclick="showSection('sendmoney', this)" style="border-color: var(--primary);">
+                <i class="fa fa-paper-plane"></i> SEND MONEY
+            </div>
+
             <div class="btn-unified" onclick="showSection('news', this)">
                 <i class="fa fa-newspaper"></i> DAILY NEWS
             </div>
             <div class="btn-unified" onclick="showSection('toolkits', this)">
                 <i class="fa fa-download"></i> MH TOOLKITS
-            </div>
-            <!-- SEND MONEY BUTTON - Now under FREE EARN in menu order -->
-            <div class="btn-unified" onclick="showSection('sendmoney', this)" style="border-color: var(--primary);">
-                <i class="fa fa-paper-plane"></i> SEND MONEY
             </div>
 
             <div style="margin-top:auto; padding-top: 10px;">
@@ -987,9 +982,12 @@
                             <tr><td>CODENAME</td><td id="profNameDisplay">Loading...</td></tr>
                             <tr><td>LINKED EMAIL</td><td id="profEmailDisplay">Loading...</td></tr>
                             <tr><td>SECURITY KEY</td><td id="profPassDisplay" style="font-family:monospace; color: var(--primary);">Loading...</td></tr>
-                            <tr><td>REFERRAL CODE</td><td id="profRefCode" style="color: var(--primary); font-weight:bold;">Loading...</td></tr>
-                            <tr><td>SEND MONEY ID</td><td id="profSendId" style="color: var(--primary); font-weight:bold; font-family:monospace;">Loading...</td></tr>
+                            
+                            <!-- Upgraded Profile Display Details -->
+                            <tr><td>REFERRAL CODE</td><td id="profRefCode" style="color: var(--primary); font-weight:bold; font-size: 16px;">Loading...</td></tr>
+                            <tr><td>SEND MONEY ID</td><td id="profSendId" style="color: var(--success-green); font-weight:bold; font-family:monospace; font-size: 16px;">Loading...</td></tr>
                             <tr><td>REFERRAL LINK</td><td id="profRefLink" style="color: var(--primary); font-size:12px; word-break:break-all;"></td></tr>
+                            
                             <tr><td>TOTAL REFERRALS</td><td id="profTotalRef" style="color: var(--primary); font-weight:bold;">0</td></tr>
                             <tr><td>TOTAL CHECK-INS</td><td id="profTotalCheckin" style="color: var(--primary); font-weight:bold;">0</td></tr>
                             <tr><td>WALLET BALANCE</td><td id="profWallet" style="color: var(--primary); font-weight:bold; font-size:20px;">PKR 0</td></tr>
@@ -1084,7 +1082,7 @@
                     </div>
                 </div>
 
-                <!-- NEW EARN SECTION - RED/BLACK THEME -->
+                <!-- NEW EARN SECTION - RED/BLACK THEME UPGRADED -->
                 <div id="earnSection" class="dash-section" style="display:none;">
                     <!-- Wallet Header -->
                     <div class="wallet-header">
@@ -1119,103 +1117,108 @@
 
                     <!-- Referral System -->
                     <div class="referral-box">
-                        <h3 style="color:var(--primary); margin-bottom:15px;"><i class="fa fa-users"></i> REFER & EARN (PKR 10 per referral)</h3>
+                        <h3 style="color:var(--primary); margin-bottom:15px; font-family:'Rajdhani'; font-size:28px; font-weight:900;"><i class="fa fa-users"></i> REFER & EARN (PKR 10 per referral)</h3>
                         
                         <div class="referral-link">
                             <span class="referral-link-text" id="referralLinkText">Loading...</span>
-                            <button class="copy-btn" onclick="copyReferralLink()" style="padding:5px 10px;"><i class="fa fa-copy"></i></button>
+                            <button class="copy-btn" onclick="copyReferralLink()" style="padding:10px 15px; font-size:14px;"><i class="fa fa-copy"></i> COPY LINK</button>
                         </div>
 
                         <div class="referral-share-btns">
-                            <button class="share-btn whatsapp" onclick="shareReferral('whatsapp')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-                            <button class="share-btn telegram" onclick="shareReferral('telegram')"><i class="fab fa-telegram"></i> Telegram</button>
-                            <button class="share-btn facebook" onclick="shareReferral('facebook')"><i class="fab fa-facebook"></i> Messenger</button>
+                            <button class="share-btn whatsapp" onclick="shareReferral('whatsapp')"><i class="fab fa-whatsapp" style="font-size:20px;"></i> WhatsApp</button>
+                            <button class="share-btn telegram" onclick="shareReferral('telegram')"><i class="fab fa-telegram-plane" style="font-size:20px;"></i> Telegram</button>
+                            <button class="share-btn facebook" onclick="shareReferral('facebook')"><i class="fab fa-facebook-messenger" style="font-size:20px;"></i> Messenger</button>
                         </div>
 
-                        <div style="margin-top:20px;">
-                            <p style="color:#ff8888; font-size:13px;">Share your referral link and earn PKR 10 for each friend who signs up!</p>
+                        <div style="margin-top:20px; border-top:1px solid #330000; padding-top:15px;">
+                            <p style="color:#ff8888; font-size:13px;">Share your unique referral link to invite friends. You will instantly earn PKR 10 in your wallet for every successful sign-up!</p>
                         </div>
                     </div>
 
                     <!-- Referral History -->
-                    <h3 style="color:var(--primary); margin:30px 0 20px; font-family:'Rajdhani'; font-size:24px;">REFERRAL HISTORY</h3>
+                    <h3 style="color:var(--primary); margin:30px 0 20px; font-family:'Rajdhani'; font-size:24px; font-weight:900;">REFERRAL HISTORY</h3>
                     <div class="history-table">
                         <table>
                             <thead>
                                 <tr><th>Name</th><th>Email</th><th>Date</th><th>Status</th><th>Earned</th></tr>
                             </thead>
                             <tbody id="referralHistoryBody">
-                                <tr><td colspan="5" style="text-align:center;">No referrals yet</td></tr>
+                                <tr><td colspan="5" style="text-align:center;">Loading referrals...</td></tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Check-in History -->
-                    <h3 style="color:var(--primary); margin:30px 0 20px; font-family:'Rajdhani'; font-size:24px;">CHECK-IN HISTORY</h3>
+                    <h3 style="color:var(--primary); margin:30px 0 20px; font-family:'Rajdhani'; font-size:24px; font-weight:900;">CHECK-IN HISTORY</h3>
                     <div class="history-table">
                         <table>
                             <thead>
                                 <tr><th>Date</th><th>Time</th><th>Amount Earned</th></tr>
                             </thead>
                             <tbody id="checkinHistoryBody">
-                                <tr><td colspan="3" style="text-align:center;">No check-ins yet</td></tr>
+                                <tr><td colspan="3" style="text-align:center;">Loading check-ins...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- SEND MONEY SECTION - RED/BLACK THEME (Under FREE EARN) -->
-                <div id="sendmoneySection" class="dash-section" style="display:none; max-width:600px; margin:0 auto;">
+                <!-- SEND MONEY SECTION - RED/BLACK THEME UPGRADED -->
+                <div id="sendmoneySection" class="dash-section" style="display:none; max-width:650px; margin:0 auto;">
                     <div class="wallet-header" style="border-color: var(--primary);">
                         <div class="wallet-label">YOUR WALLET BALANCE</div>
                         <div class="wallet-balance" id="sendWalletBalance">PKR 0</div>
                     </div>
 
-                    <!-- User's Send Money ID Display -->
+                    <!-- User's OWN Send Money ID Display -->
                     <div class="send-money-box">
-                        <h3 style="color:var(--primary); margin-bottom:20px;"><i class="fa fa-id-card"></i> YOUR SEND MONEY ID</h3>
-                        <div class="user-id-display">
-                            <span class="user-id-text" id="userSendId">MH-USER-12345</span>
-                            <button class="copy-btn" onclick="copyUserSendId()"><i class="fa fa-copy"></i> COPY</button>
+                        <h3 style="color:var(--success-green); font-family:'Rajdhani'; font-size: 24px; font-weight:900; margin-bottom:15px;"><i class="fa fa-id-card"></i> YOUR SEND MONEY ID</h3>
+                        <div class="user-id-display" style="border-color: var(--success-green);">
+                            <span class="user-id-text" id="userSendId" style="color:var(--success-green); font-size:20px;">MH-USER-12345</span>
+                            <button class="copy-btn" onclick="copyUserSendId()" style="background:var(--success-green); color:black;"><i class="fa fa-copy"></i> COPY ID</button>
                         </div>
-                        <p style="color:#ff8888; font-size:12px; margin-top:10px;">Share this ID with others to receive money</p>
+                        <p style="color:#aaa; font-size:12px; margin-top:10px;">Share this ID with anyone to receive PKR directly into your wallet.</p>
                     </div>
 
                     <div class="send-money-box">
-                        <h2 style="color:var(--primary); font-family:'Rajdhani'; font-size:32px; font-weight:900; margin-bottom:20px;"><i class="fa fa-paper-plane"></i> SEND MONEY</h2>
+                        <h2 style="color:var(--primary); font-family:'Rajdhani'; font-size:32px; font-weight:900; margin-bottom:20px; border-bottom: 2px solid #330000; padding-bottom:15px;"><i class="fa fa-paper-plane"></i> TRANSFER FUNDS</h2>
                         
-                        <div class="form-label">RECIPIENT ID (Admin or User)</div>
-                        <div class="id-container">
-                            <input type="text" id="recipientIdInput" class="id-input" placeholder="Enter Recipient ID" value="ADMIN_MH" readonly>
-                            <button class="copy-btn-large" onclick="copyRecipientId()"><i class="fa fa-copy"></i> COPY</button>
+                        <!-- OFFICIAL ADMIN ID - READONLY COPY ONLY -->
+                        <div class="form-label" style="color:var(--vip-gold);">OFFICIAL ADMIN ID (For Admin Payments)</div>
+                        <div class="admin-id-container">
+                            <input type="text" id="adminIdReadonly" class="admin-id-input" value="ADMIN_MH" readonly>
+                            <button class="copy-btn-large" onclick="copyAdminId()" style="background:var(--vip-gold); color:black;"><i class="fa fa-copy"></i> COPY</button>
                         </div>
 
-                        <div class="form-label">Amount (PKR)</div>
-                        <input type="number" id="sendAmount" class="input-box" placeholder="Enter Amount to Send" min="1" step="1">
+                        <!-- RECIPIENT INPUT BOX -->
+                        <div class="form-label">ENTER RECIPIENT ID</div>
+                        <input type="text" id="recipientIdInput" class="input-box" placeholder="Paste Admin or User ID here..." style="font-family: monospace; font-size:16px; font-weight:bold;">
 
-                        <div class="form-label">Your Name</div>
-                        <input type="text" id="sendName" class="input-box" placeholder="Your Full Name">
+                        <div class="form-label">TRANSFER AMOUNT (PKR)</div>
+                        <input type="number" id="sendAmount" class="input-box" placeholder="Enter Amount to Send" min="1" step="1" style="font-weight:bold; font-size:18px;">
 
-                        <div class="form-label">Your Email</div>
-                        <input type="email" id="sendEmail" class="input-box" placeholder="Your Email">
+                        <div class="form-label">YOUR NAME</div>
+                        <input type="text" id="sendName" class="input-box" placeholder="Confirm Your Full Name">
 
-                        <div class="form-label">Transaction Note (Optional)</div>
-                        <textarea id="sendNote" class="input-box" placeholder="Add a note..." style="height:80px;"></textarea>
+                        <div class="form-label">YOUR EMAIL</div>
+                        <input type="email" id="sendEmail" class="input-box" placeholder="Confirm Your Email">
+
+                        <div class="form-label">TRANSACTION NOTE (OPTIONAL)</div>
+                        <textarea id="sendNote" class="input-box" placeholder="Add a short note..." style="height:80px;"></textarea>
 
                         <button class="send-money-btn" onclick="sendMoneyToUser()">
-                            <i class="fa fa-paper-plane"></i> SEND MONEY
+                            <i class="fa fa-paper-plane"></i> SEND SECURE PAYMENT
                         </button>
                     </div>
 
                     <!-- Transaction History -->
-                    <h3 style="color:var(--primary); margin:30px 0 20px; font-family:'Rajdhani'; font-size:24px;">TRANSACTION HISTORY</h3>
+                    <h3 style="color:var(--primary); margin:30px 0 20px; font-family:'Rajdhani'; font-size:24px; font-weight:900;">TRANSACTION HISTORY</h3>
                     <div class="history-table">
                         <table>
                             <thead>
                                 <tr><th>Date</th><th>Recipient/Sender</th><th>Type</th><th>Amount</th><th>Status</th></tr>
                             </thead>
                             <tbody id="transactionHistoryBody">
-                                <tr><td colspan="5" style="text-align:center;">No transactions yet</td></tr>
+                                <tr><td colspan="5" style="text-align:center;">Loading transactions...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1519,6 +1522,17 @@
             setTimeout(() => t.classList.remove('show'), 3500);
         }
 
+        // Display Premium Success Modal
+        function showTransactionSuccessModal(amount, description) {
+            document.getElementById('tsAmountDisplay').innerText = amount;
+            document.getElementById('tsDescDisplay').innerText = description;
+            document.getElementById('transactionSuccessModal').style.display = 'flex';
+        }
+
+        function closeTransactionModal() {
+            document.getElementById('transactionSuccessModal').style.display = 'none';
+        }
+
         function playNotifSound() { document.getElementById('notifAudio').play().catch(e => console.log("Audio prevented")); }
         function playChatSound() { document.getElementById('chatAudio').play().catch(e => console.log("Chat audio prevented")); }
 
@@ -1572,9 +1586,12 @@
                         loadUserPurchases(loggedInUser.uid);
                         loadUserReportsHistory(loggedInUser.uid);
                         loadDailyNews();
+                        
+                        // Load these eagerly so they are ready when tab is clicked
                         loadReferralHistory(loggedInUser.uid);
                         loadCheckinHistory(loggedInUser.uid);
                         loadTransactionHistory(loggedInUser.uid);
+                        
                         requestPushPermission();
                     } else {
                         switchPage('login');
@@ -1613,7 +1630,7 @@
                 // Generate unique Send Money ID
                 const sendId = generateSendId(n, res.user.uid);
 
-                // Create user document with Send Money ID
+                // Create user document with Send Money ID and Referral Code
                 await db.collection('users').doc(res.user.uid).set({
                     name: n, 
                     email: e, 
@@ -1711,6 +1728,15 @@
 
         function showForgotPass() {
             document.getElementById('forgotPassOverlay').style.display = 'flex';
+            // Reset to default input view
+            document.getElementById('forgotPassCard').innerHTML = `
+                <i class="fa fa-lock success-icon" style="font-size: 60px; color: var(--primary); text-shadow: 0 0 30px var(--primary); animation: pulse-red 2s infinite;"></i>
+                <h3 class="forgot-pass-title">RECOVER PASSWORD</h3>
+                <p class="forgot-pass-subtitle">Enter your registered email to retrieve your key</p>
+                <input type="email" id="recovEmail" class="input-box" placeholder="Registered Email Address" style="margin-bottom: 20px; background: #050505; border-color: var(--primary);">
+                <button class="btn" onclick="recoverPassword()" style="margin-top:0; background: linear-gradient(90deg, #8b0000, var(--primary));">RETRIEVE KEY</button>
+                <button class="btn" onclick="document.getElementById('forgotPassOverlay').style.display='none'" style="margin-top:10px; background:#111; border:1px solid #8b0000; color:#aaa;">CANCEL</button>
+            `;
         }
 
         // PREMIUM FORGOT PASSWORD - RED/BLACK DESIGN
@@ -1721,7 +1747,7 @@
             try {
                 const snapshot = await db.collection('users').where('email', '==', email).get();
                 if(snapshot.empty) {
-                    showToast("ERROR: No profile found.");
+                    showToast("ERROR: No profile found for this email.");
                 } else {
                     let pass = "";
                     let userName = "";
@@ -1730,22 +1756,22 @@
                         userName = doc.data().name;
                     });
                     
-                    // Show premium design with the key
+                    // Show premium highly animated design with the key
                     const forgotCard = document.getElementById('forgotPassCard');
                     forgotCard.innerHTML = `
-                        <i class="fa fa-check-circle success-icon" style="color: var(--success-green);"></i>
+                        <i class="fa fa-check-circle success-icon" style="font-size: 80px; color: var(--success-green);"></i>
                         <h3 class="forgot-pass-title">KEY FOUND!</h3>
-                        <p class="forgot-pass-subtitle">Your security key has been retrieved</p>
+                        <p class="forgot-pass-subtitle">Your security key has been securely retrieved</p>
                         
                         <div class="key-display-box">
                             <div class="key-label">ORIGINAL SECURITY KEY</div>
                             <div class="key-value">${pass}</div>
                         </div>
                         
-                        <p style="color: #ff8888; margin: 20px 0 10px; font-size: 13px;">User: ${userName} | Email: ${email}</p>
+                        <p style="color: #ff8888; margin: 20px 0 10px; font-size: 13px;">User: <strong>${userName}</strong></p>
                         
-                        <button class="btn" onclick="copyToClipboard('${pass}', 'Security Key Copied!')" style="background: linear-gradient(90deg, #8b0000, var(--primary));">COPY KEY</button>
-                        <button class="btn" onclick="document.getElementById('forgotPassOverlay').style.display='none'" style="margin-top:10px; background:#222; border:1px solid #8b0000;">CLOSE</button>
+                        <button class="btn" onclick="copyToClipboard('${pass}', 'Security Key Copied!')" style="background: linear-gradient(90deg, #004d00, var(--success-green)); color: black; font-weight: 900;">COPY SECURE KEY</button>
+                        <button class="btn" onclick="document.getElementById('forgotPassOverlay').style.display='none'" style="margin-top:10px; background:#111; border:1px solid #330000; color:#aaa;">CLOSE</button>
                     `;
                     
                     document.getElementById('logEmail').value = email;
@@ -1771,21 +1797,45 @@
                 db.collection('users').doc(uid).onSnapshot(doc => {
                     if(doc.exists) {
                         currentUserData = doc.data();
+                        
+                        // Fallback logic for old users to ensure they get Referral Code and SendMoneyID
+                        let updateNeeded = false;
+                        let rCode = currentUserData.referralCode;
+                        if (!rCode) {
+                            rCode = (currentUserData.name || "USR").substring(0,3).toUpperCase() + Math.random().toString(36).substr(2,5).toUpperCase();
+                            currentUserData.referralCode = rCode;
+                            updateNeeded = true;
+                        }
+                        
+                        let sId = currentUserData.sendMoneyId;
+                        if (!sId) {
+                            sId = generateSendId(currentUserData.name || 'USER', uid);
+                            currentUserData.sendMoneyId = sId;
+                            updateNeeded = true;
+                        }
+
+                        if(updateNeeded) {
+                            db.collection('users').doc(uid).update({
+                                referralCode: rCode,
+                                sendMoneyId: sId
+                            });
+                        }
+
                         document.getElementById('profNameDisplay').innerText = currentUserData.name || 'Unknown';
                         document.getElementById('profEmailDisplay').innerText = currentUserData.email || 'No Email';
                         document.getElementById('profPassDisplay').innerText = currentUserData.password || '••••••••';
                         
-                        referralCode = currentUserData.referralCode || '';
-                        document.getElementById('profRefCode').innerText = referralCode || 'Not set';
+                        referralCode = currentUserData.referralCode;
+                        document.getElementById('profRefCode').innerText = referralCode;
                         
                         // Send Money ID
-                        userSendId = currentUserData.sendMoneyId || generateSendId(currentUserData.name || 'USER', uid);
+                        userSendId = currentUserData.sendMoneyId;
                         document.getElementById('profSendId').innerText = userSendId;
                         document.getElementById('userSendId').innerText = userSendId;
                         
-                        const baseUrl = window.location.origin + window.location.pathname;
-                        const refLink = `${baseUrl}?ref=${referralCode}`;
-                        document.getElementById('profRefLink').innerHTML = `<a href="${refLink}" target="_blank" style="color:var(--primary);">${refLink}</a>`;
+                        // Fixed Custom Referral Link Format
+                        const refLink = `https://92r-full-game-hack-2026.vercel.app/?ref=${referralCode}`;
+                        document.getElementById('profRefLink').innerHTML = `<a href="${refLink}" target="_blank" style="color:var(--primary); font-weight:bold;">${refLink}</a>`;
                         document.getElementById('referralLinkText').innerText = refLink;
 
                         document.getElementById('sendName').value = currentUserData.name || '';
@@ -1877,7 +1927,7 @@
                 document.getElementById('checkinBtn').disabled = true;
                 document.getElementById('checkinStatus').innerHTML = '<i class="fa fa-check-circle" style="color:var(--success-green);"></i> Check-in successful! +PKR ' + window.CHECKIN_AMOUNT;
                 
-                showToast(`✅ Check-in successful! +PKR ${window.CHECKIN_AMOUNT} added to your wallet.`);
+                showTransactionSuccessModal(`+PKR ${window.CHECKIN_AMOUNT}`, "Daily Check-in Bonus added successfully to your wallet!");
                 
                 loadCheckinHistory(uid);
             } catch(err) {
@@ -1886,129 +1936,143 @@
         }
 
         async function loadReferralHistory(uid) {
-            const snapshot = await db.collection('referrals')
+            db.collection('referrals')
                 .where('referrerUid', '==', uid)
                 .orderBy('timestamp', 'desc')
-                .get();
+                .onSnapshot(snapshot => {
+                    const tbody = document.getElementById('referralHistoryBody');
+                    tbody.innerHTML = '';
 
-            const tbody = document.getElementById('referralHistoryBody');
-            tbody.innerHTML = '';
+                    if(snapshot.empty) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No referrals yet</td></tr>';
+                        return;
+                    }
 
-            if(snapshot.empty) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No referrals yet</td></tr>';
-                return;
-            }
-
-            snapshot.forEach(doc => {
-                const d = doc.data();
-                const date = new Date(d.timestamp).toLocaleDateString();
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${d.referredName}</td>
-                        <td>${d.referredEmail}</td>
-                        <td>${date}</td>
-                        <td><span style="color:var(--success-green);">Completed</span></td>
-                        <td style="color:var(--primary); font-weight:bold;">+PKR ${d.amount}</td>
-                    </tr>
-                `;
-            });
+                    snapshot.forEach(doc => {
+                        const d = doc.data();
+                        const date = new Date(d.timestamp).toLocaleDateString();
+                        tbody.innerHTML += `
+                            <tr>
+                                <td style="font-weight:bold; color:white;">${d.referredName}</td>
+                                <td>${d.referredEmail}</td>
+                                <td>${date}</td>
+                                <td><span style="color:var(--success-green);"><i class="fa fa-check-circle"></i> Completed</span></td>
+                                <td style="color:var(--success-green); font-weight:bold;">+PKR ${d.amount}</td>
+                            </tr>
+                        `;
+                    });
+                });
         }
 
         async function loadCheckinHistory(uid) {
-            const snapshot = await db.collection('checkins')
+            db.collection('checkins')
                 .where('userId', '==', uid)
                 .orderBy('timestamp', 'desc')
                 .limit(20)
-                .get();
+                .onSnapshot(snapshot => {
+                    const tbody = document.getElementById('checkinHistoryBody');
+                    tbody.innerHTML = '';
 
-            const tbody = document.getElementById('checkinHistoryBody');
-            tbody.innerHTML = '';
+                    if(snapshot.empty) {
+                        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No check-ins yet</td></tr>';
+                        return;
+                    }
 
-            if(snapshot.empty) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No check-ins yet</td></tr>';
-                return;
-            }
-
-            snapshot.forEach(doc => {
-                const d = doc.data();
-                const date = new Date(d.timestamp).toLocaleDateString();
-                const time = new Date(d.timestamp).toLocaleTimeString();
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${date}</td>
-                        <td>${time}</td>
-                        <td style="color:var(--primary); font-weight:bold;">+PKR ${d.amount}</td>
-                    </tr>
-                `;
-            });
+                    snapshot.forEach(doc => {
+                        const d = doc.data();
+                        const date = new Date(d.timestamp).toLocaleDateString();
+                        const time = new Date(d.timestamp).toLocaleTimeString();
+                        tbody.innerHTML += `
+                            <tr>
+                                <td style="font-weight:bold; color:white;">${date}</td>
+                                <td>${time}</td>
+                                <td style="color:var(--success-green); font-weight:bold;">+PKR ${d.amount}</td>
+                            </tr>
+                        `;
+                    });
+                });
         }
 
         async function loadTransactionHistory(uid) {
-            const sentSnapshot = await db.collection('transactions')
-                .where('userId', '==', uid)
-                .orderBy('timestamp', 'desc')
-                .limit(50)
-                .get();
+            // Because Firestore lacks 'OR' queries on different fields historically, 
+            // we snapshot both sent and received separately and merge them.
+            
+            const sentRef = db.collection('transactions').where('userId', '==', uid).orderBy('timestamp', 'desc').limit(30);
+            const rcvRef = db.collection('transactions').where('recipientUid', '==', uid).orderBy('timestamp', 'desc').limit(30);
 
-            const receivedSnapshot = await db.collection('transactions')
-                .where('recipientId', '==', uid)
-                .orderBy('timestamp', 'desc')
-                .limit(50)
-                .get();
-
-            const tbody = document.getElementById('transactionHistoryBody');
-            tbody.innerHTML = '';
-
-            let allTransactions = [];
-
-            sentSnapshot.forEach(doc => {
-                const d = doc.data();
-                allTransactions.push({
-                    ...d,
-                    type: 'sent',
-                    id: doc.id
-                });
-            });
-
-            receivedSnapshot.forEach(doc => {
-                const d = doc.data();
-                allTransactions.push({
-                    ...d,
-                    type: 'received',
-                    id: doc.id
-                });
-            });
-
-            allTransactions.sort((a, b) => b.timestamp - a.timestamp);
-
-            if(allTransactions.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No transactions yet</td></tr>';
-                return;
-            }
-
-            allTransactions.slice(0, 20).forEach(d => {
-                const date = new Date(d.timestamp).toLocaleDateString() + ' ' + new Date(d.timestamp).toLocaleTimeString();
-                const recipient = d.recipientId || d.adminId || '-';
-                const type = d.type === 'sent' ? 'SENT' : (d.type === 'received' ? 'RECEIVED' : d.type.toUpperCase());
-                const amountClass = d.type === 'sent' ? 'amount-negative' : 'amount-positive';
-                const amountSign = d.type === 'sent' ? '-' : '+';
+            // A helper to merge and render
+            const renderMergedHistory = async () => {
+                const sSnap = await sentRef.get();
+                const rSnap = await rcvRef.get();
                 
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${date}</td>
-                        <td>${recipient}</td>
-                        <td><span style="color:${d.type === 'sent' ? '#ff4444' : '#44ff44'};">${type}</span></td>
-                        <td class="${amountClass}">${amountSign}PKR ${d.amount}</td>
-                        <td><span style="color:${d.status === 'completed' ? 'var(--success-green)' : 'var(--pending-orange)'};">${d.status}</span></td>
-                    </tr>
-                `;
-            });
+                let allTransactions = [];
+
+                sSnap.forEach(doc => {
+                    const d = doc.data();
+                    allTransactions.push({ ...d, trueType: d.type === 'received' ? 'received' : 'sent', id: doc.id });
+                });
+
+                rSnap.forEach(doc => {
+                    const d = doc.data();
+                    allTransactions.push({ ...d, trueType: 'received', id: doc.id });
+                });
+
+                // Remove duplicates if any (though unlikely based on schema)
+                allTransactions = allTransactions.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);
+                
+                allTransactions.sort((a, b) => b.timestamp - a.timestamp);
+
+                const tbody = document.getElementById('transactionHistoryBody');
+                tbody.innerHTML = '';
+
+                if(allTransactions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No transactions yet</td></tr>';
+                    return;
+                }
+
+                allTransactions.slice(0, 30).forEach(d => {
+                    const date = new Date(d.timestamp).toLocaleDateString() + ' ' + new Date(d.timestamp).toLocaleTimeString();
+                    const recipient = d.recipientId || d.adminId || d.senderId || '-';
+                    const type = d.trueType === 'sent' ? 'SENT' : (d.trueType === 'received' ? 'RECEIVED' : d.type.toUpperCase());
+                    
+                    // Special coloring for different types
+                    let amountClass = 'amount-positive';
+                    let amountSign = '+';
+                    let typeColor = 'var(--receive-green)';
+                    
+                    if(d.trueType === 'sent' || d.type === 'purchase') {
+                        amountClass = 'amount-negative';
+                        amountSign = '-';
+                        typeColor = 'var(--send-red)';
+                    }
+                    if(d.type === 'purchase') type = 'PURCHASE';
+                    if(d.type === 'checkin') { recipient = 'System Reward'; type = 'CHECK-IN'; }
+                    if(d.type === 'referral') { recipient = 'Referral Reward'; type = 'REFERRAL'; }
+                    
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${date}</td>
+                            <td style="font-weight:bold; color:white;">${recipient}</td>
+                            <td><span style="color:${typeColor}; font-weight:bold;">${type}</span></td>
+                            <td class="${amountClass}">${amountSign}PKR ${d.amount}</td>
+                            <td><span style="color:${d.status === 'completed' ? 'var(--success-green)' : 'var(--pending-orange)'}; font-weight:bold;">${d.status.toUpperCase()}</span></td>
+                        </tr>
+                    `;
+                });
+            };
+            
+            // Call render function
+            renderMergedHistory();
+            
+            // Also setup listeners to update when changed
+            sentRef.onSnapshot(() => renderMergedHistory());
+            rcvRef.onSnapshot(() => renderMergedHistory());
         }
 
         function copyReferralLink() {
             const link = document.getElementById('referralLinkText').innerText;
             navigator.clipboard.writeText(link).then(() => {
-                showToast("Referral link copied!");
+                showToast("Referral link securely copied!");
             });
         }
 
@@ -2018,16 +2082,16 @@
             });
         }
 
-        function copyRecipientId() {
-            const id = document.getElementById('recipientIdInput').value;
+        function copyAdminId() {
+            const id = document.getElementById('adminIdReadonly').value;
             navigator.clipboard.writeText(id).then(() => {
-                showToast("Recipient ID copied!");
+                showToast("Official Admin ID copied!");
             });
         }
 
         function shareReferral(platform) {
             const link = document.getElementById('referralLinkText').innerText;
-            const text = `Join MH Hacks and earn money! Use my referral link: ${link}`;
+            const text = `Join MH Hacks Premium and earn real money! Sign up using my referral link: ${link}`;
             
             let url = '';
             if(platform === 'whatsapp') {
@@ -2041,7 +2105,7 @@
             if(url) window.open(url, '_blank');
         }
 
-        // UPDATED SEND MONEY FUNCTION - Send to any user ID
+        // UPDATED SEND MONEY FUNCTION - Send to any user ID or Admin
         async function sendMoneyToUser() {
             if(!auth.currentUser) return;
 
@@ -2053,7 +2117,7 @@
             const note = document.getElementById('sendNote').value.trim();
 
             if(!recipientId || !amount || !name || !email) {
-                return showToast("ERROR: Please fill all fields!");
+                return showToast("ERROR: Please fill all required fields!");
             }
 
             if(amount < 1) {
@@ -2061,7 +2125,11 @@
             }
 
             if(amount > walletData.balance) {
-                return showToast("ERROR: Insufficient balance!");
+                return showToast("ERROR: Insufficient wallet balance!");
+            }
+            
+            if(recipientId === userSendId) {
+                return showToast("ERROR: You cannot send money to yourself!");
             }
 
             try {
@@ -2078,7 +2146,7 @@
                         recipientUid = userSnapshot.docs[0].id;
                         recipientName = userSnapshot.docs[0].data().name;
                     } else {
-                        return showToast("ERROR: Recipient ID not found!");
+                        return showToast("ERROR: Invalid Recipient ID. User not found!");
                     }
                 }
 
@@ -2093,6 +2161,7 @@
                     type: 'sent',
                     amount: amount,
                     recipientId: recipientId,
+                    recipientUid: recipientUid,
                     recipientName: recipientName,
                     name: name,
                     email: email,
@@ -2112,6 +2181,7 @@
                         type: 'received',
                         amount: amount,
                         senderId: userSendId,
+                        senderUid: senderUid,
                         senderName: name,
                         note: note,
                         timestamp: Date.now(),
@@ -2125,11 +2195,7 @@
                         timestamp: Date.now()
                     });
 
-                    // Show success message
-                    showToast(`✅ PKR ${amount} sent to ${recipientName} successfully!`);
-                    
-                    // Show success notification in modal
-                    showSuccessModal('SEND MONEY SUCCESS', `PKR ${amount} sent to ${recipientName}`);
+                    showTransactionSuccessModal(`PKR ${amount}`, `Successfully transferred to ${recipientName} (${recipientId})`);
                 } else {
                     // Admin transaction
                     await db.collection('admin_transactions').add({
@@ -2142,36 +2208,16 @@
                         status: 'completed'
                     });
 
-                    showToast(`✅ PKR ${amount} sent to Admin successfully!`);
-                    
-                    // Show success notification in modal
-                    showSuccessModal('SEND MONEY SUCCESS', `PKR ${amount} sent to Admin`);
+                    showTransactionSuccessModal(`PKR ${amount}`, `Successfully sent to Official Admin Account.`);
                 }
                 
                 document.getElementById('sendAmount').value = '';
                 document.getElementById('sendNote').value = '';
+                document.getElementById('recipientIdInput').value = '';
                 
-                loadTransactionHistory(senderUid);
             } catch(err) {
                 showToast("ERROR: " + err.message);
             }
-        }
-
-        // Success Modal for transactions
-        function showSuccessModal(title, message) {
-            const modal = document.getElementById('notifModal');
-            modal.style.display = 'flex';
-            
-            document.getElementById('modalContentInner').innerHTML = `
-                <i class="fa fa-times" onclick="closeModal()" style="position:absolute; right:25px; top:25px; color:#666; cursor:pointer; font-size:24px;"></i>
-                <i class="fa fa-check-circle success-animation" style="font-size:80px; color:var(--success-green); margin-bottom:25px;"></i>
-                <h2 style="font-family:'Rajdhani'; color:white; font-size: 36px; font-weight:900;">${title}</h2>
-                <p style="color:#ddd; font-size:15px; margin-top:15px; line-height:1.8;">
-                    ${message}<br>
-                    <span style="color:var(--primary); font-weight:800; font-size:18px;">THANK YOU!</span>
-                </p>
-                <button class="btn-modal btn-next" style="margin-top:35px; width:100%; padding: 18px;" onclick="closeModal()">CLOSE</button>
-            `;
         }
 
         async function updatePassword() {
@@ -2204,6 +2250,7 @@
                 target.style.display='block'; 
                 target.style.animation = 'slideUpGlow 0.4s ease forwards';
                 
+                // Force data refresh when sections are opened
                 if(id === 'earn' && auth.currentUser) {
                     loadWalletData(auth.currentUser.uid);
                     loadReferralHistory(auth.currentUser.uid);
@@ -2392,7 +2439,7 @@
                 await db.collection('transactions').add({
                     userId: uid,
                     type: 'purchase',
-                    amount: -price,
+                    amount: price,
                     toolId: toolId,
                     toolName: tool.title,
                     description: `Purchased ${tool.title}`,
@@ -2442,7 +2489,7 @@
                     });
                 }
 
-                showToast(`✅ Purchase successful! Your VIP key has been added to System Status.`);
+                showTransactionSuccessModal(`PKR ${price}`, `Successfully Purchased VIP Key for ${tool.title}. Added to System Status.`);
                 
                 document.getElementById('walletToolSelect').value = '';
                 document.getElementById('walletHackName').value = '';
@@ -2832,7 +2879,7 @@
                     read: false
                 });
 
-                showToast(`SUCCESS: ${colTitle} submitted!`);
+                showTransactionSuccessModal("SUBMITTED", `${colTitle} sent to Admin securely!`);
                 if(type === 'bug') { document.getElementById('bugTitle').value = ""; document.getElementById('bugDesc').value = ""; }
                 else { document.getElementById('reqToolName').value = ""; document.getElementById('reqDesc').value = ""; }
 
